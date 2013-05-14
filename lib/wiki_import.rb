@@ -1,4 +1,5 @@
 require_relative 'wiki_handler'
+require 'pry'
 
 class WikiImport < Nokogiri::XML::SAX::Document
   
@@ -34,22 +35,40 @@ class WikiImport < Nokogiri::XML::SAX::Document
   
   def start_document
     logger.debug "Start document"
+    puts "Start document***********"
   end
   
   def end_document
     logger.debug "End document"
+    puts "Ended document **************"
   end
+
   
   def characters(c)
-   
+     @title = c if @interested
   end
 
   def start_element(name, attrs)
+    puts "Starting element"
     logger.debug "Found element #{name}"
+    if name == "title"
+      @interested = true
+    else 
+      @interested = false
+    end
   end
   
   def end_element(name)
+    puts "What ELEMENT AM I ENDING HERE"
     logger.debug "Finished element #{name}"
+    
+    if name == "title"
+
+      File.open("sql.txt", "a") { |f| 
+        f.write("#{@title})")
+        }
+      sql << "INSTERT INTO articles (title) VALUES ('#{@title}')"
+    end
   end
   
   def method_missing(m, *args, &block)
@@ -69,3 +88,4 @@ class WikiImport < Nokogiri::XML::SAX::Document
     "/tmp/articles-#{@output_file_count}.sql"
   end  
 end
+
