@@ -63,11 +63,10 @@ class WikiImport < Nokogiri::XML::SAX::Document
     logger.debug "Finished element #{name}"
     
     if name == "title"
-
       File.open("sql.txt", "a") { |f| 
-        f.write("#{@title})")
+        f.write("#{@title}\n")
         }
-      sql << "INSTERT INTO articles (title) VALUES ('#{@title}')"
+      #sql << "INSTERT INTO articles (title) VALUES ('#{@title}')"
     end
   end
   
