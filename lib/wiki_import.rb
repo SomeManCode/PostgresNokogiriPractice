@@ -24,6 +24,7 @@ class WikiImport < Nokogiri::XML::SAX::Document
   
   def initialize(logger)
     self.logger = logger
+
     self.attribute_stack = Array.new
     self.page_count = 0
     self.last_page = {}
